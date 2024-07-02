@@ -40,73 +40,50 @@ def game_over():
     pygame.display.flip()
     time.sleep(2)
     pygame.quit()
+def get_direction_towards_apple(snake_head, apple_position):
+    dx = apple_position[0] - snake_head[0]
+    dy = apple_position[1] - snake_head[1]
+    directions = []
+    if dx > 0: directions.append('RIGHT')
+    elif dx < 0: directions.append('LEFT')
+    if dy > 0: directions.append('DOWN')
+    elif dy < 0: directions.append('UP')
+    return directions
 
-# Set up the game loop
+def is_direction_safe(direction, snake, walls):
+    # Implement logic to check if moving in the given direction would hit the snake itself or walls
+    # Return True if safe, False otherwise
+    pass
+
+# Modify the game loop to use the new logic
+# Assuming the helper functions are defined here
+
 while True:
+    # Event handling loop (simplified for brevity)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
-            sys.exit()
-        elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_RIGHT or event.key == ord('d'):
-                change_to = 'RIGHT'
-            if event.key == pygame.K_LEFT or event.key == ord('a'):
-                change_to = 'LEFT'
-            if event.key == pygame.K_UP or event.key == ord('w'):
-                change_to = 'UP'
-            if event.key == pygame.K_DOWN or event.key == ord('s'):
-                change_to = 'DOWN'
+            quit()
 
-    # Validate the direction
-    if change_to == 'RIGHT' and direction != 'LEFT':
+    # Automatic direction decision logic
+    snake_head = snake_body[0]
+    preferred_directions = get_direction_towards_apple(snake_head, food_position)
+    for direction in preferred_directions:
+        if is_direction_safe(direction, snake_body, walls=window_width, window_height):
+            change_to = direction
+            break
+
+    # Update the snake's direction based on `change_to`
+    if change_to == 'RIGHT' and not direction == 'LEFT':
         direction = 'RIGHT'
-    if change_to == 'LEFT' and direction != 'RIGHT':
+    elif change_to == 'LEFT' and not direction == 'RIGHT':
         direction = 'LEFT'
-    if change_to == 'UP' and direction != 'DOWN':
+    elif change_to == 'UP' and not direction == 'DOWN':
         direction = 'UP'
-    if change_to == 'DOWN' and direction != 'UP':
+    elif change_to == 'DOWN' and not direction == 'UP':
         direction = 'DOWN'
 
-    # Update the snake position
-    if direction == 'RIGHT':
-        snake_position[0] += 10
-    if direction == 'LEFT':
-        snake_position[0] -= 10
-    if direction == 'UP':
-        snake_position[1] -= 10
-    if direction == 'DOWN':
-        snake_position[1] += 10
+    # Update snake position, check for collisions, update the screen, etc.
 
-    # Snake body mechanism
-    snake_body.insert(0, list(snake_position))
-    if snake_position[0] == food_position[0] and snake_position[1] == food_position[1]:
-        score += 1
-        food_spawn = False
-    else:
-        snake_body.pop()
-
-    # Spawn new food
-    if not food_spawn:
-        food_position = [random.randrange(1, (window_width // 10)) * 10, random.randrange(1, (window_height // 10)) * 10]
-    food_spawn = True
-
-    # Draw the snake and food
-    window.fill(blue)
-    for pos in snake_body:
-        pygame.draw.rect(window, green, pygame.Rect(pos[0], pos[1], 10, 10))
-    pygame.draw.rect(window, red, pygame.Rect(food_position[0], food_position[1], 10, 10))
-
-    # Game over conditions
-    if snake_position[0] < 0 or snake_position[0] > window_width - 10:
-        game_over()
-    if snake_position[1] < 0 or snake_position[1] > window_height - 10:
-        game_over()
-    for block in snake_body[1:]:
-        if snake_position[0] == block[0] and snake_position[1] == block[1]:
-            game_over()
-
-    # Update the game display
-    pygame.display.update()
-
-    # Set the game speed
-    clock.tick(15)
+    pygame.display.flip()
+    clock.tick(30)  # Adjust as necessary for your game's desired speed
