@@ -109,8 +109,6 @@ class Agent:
 
         return final_move
 
-model = Linear_QNet(11, HIDDEN_LAYER, 3)
-model.load()  # Attempt to load the model's state
 
 # Your training code here
 
@@ -138,6 +136,7 @@ def train():
         
         
 
+  
     while True:
         signal.signal(signal.SIGINT, signal_handler)
         start_t = time.time()
@@ -175,8 +174,28 @@ def train():
             plot_mean_scores.append(mean_score)
             plot(plot_scores, plot_mean_scores)
             print('Game', agent.n_games, 'Score',score, 'Record:', record, 'Mean Score:', mean_score,'Time:', round(current_t-start_t, 4))
-            
+    
+     # Set the model to evaluation mode
 
+    '''while True:
+        agent.model.eval()    
+        signal.signal(signal.SIGINT, signal_handler)
+        start_t = time.time()
+        # get old state
+        state_old = agent.get_state(game)
+
+        # get move
+        final_move = agent.get_action(state_old)
+
+        # perform move and get new state
+        reward, done, score = game.play_step(final_move)
+        state_new = agent.get_state(game)
+
+        if done:
+
+            print('Game', agent.n_games, 'Score',score, 'Record:',)
+    
+            break'''
 
 if __name__ == '__main__':
     train()

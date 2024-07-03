@@ -3,6 +3,7 @@ import torch.nn as nn
 import torch.optim as optim
 import torch.nn.functional as F
 import os
+import datetime
 
 
 
@@ -29,9 +30,11 @@ class Linear_QNet(nn.Module):
         model_folder_path = './model'
         if not os.path.exists(model_folder_path):
             os.makedirs(model_folder_path)
-        file_name = os.path.join(model_folder_path, file_name)
+        timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
+        file_name = f'model_{timestamp}.pth'
+        file_path = os.path.join(model_folder_path, file_name)
         
-        torch.save(self.state_dict(), file_name)
+        torch.save(self.state_dict(), file_path)
 
 class QTrainer:
 
@@ -71,4 +74,3 @@ class QTrainer:
             loss.backward()
 
             self.optimizer.step()    
-
