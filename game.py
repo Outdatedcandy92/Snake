@@ -16,17 +16,17 @@ class Direction(Enum):
 Point = namedtuple('Point', 'x, y')
 
 # rgb colors
-WHITE = (255, 255, 255)
-RED = (200,0,0)
-GREEN = (0, 255, 0)
-BLACK = (0,0,0)
+TEXT_COLOR = (255, 255, 255)
+APPLE_COLOR = (200,0,0)
+SNAKE_COLOR = (0, 255, 0)
+BG_COLOR = (0,0,0)
 
 BLOCK_SIZE = 20
 SPEED = 80
 
 class SnakeGameAI:
 
-    def __init__(self, w=640, h=480):
+    def __init__(self, w=800, h=800):
         self.w = w
         self.h = h
         # init display
@@ -108,14 +108,14 @@ class SnakeGameAI:
 
 
     def _update_ui(self):
-        self.display.fill(BLACK)
+        self.display.fill(BG_COLOR)
 
         for pt in self.snake:
-            pygame.draw.rect(self.display, GREEN, pygame.Rect(pt.x, pt.y, BLOCK_SIZE, BLOCK_SIZE))
+            pygame.draw.rect(self.display, SNAKE_COLOR, pygame.Rect(pt.x, pt.y, BLOCK_SIZE, BLOCK_SIZE))
 
-        pygame.draw.rect(self.display, RED, pygame.Rect(self.food.x, self.food.y, BLOCK_SIZE, BLOCK_SIZE))
+        pygame.draw.rect(self.display, APPLE_COLOR, pygame.Rect(self.food.x, self.food.y, BLOCK_SIZE, BLOCK_SIZE))
 
-        text = font.render("Score: " + str(self.score), True, WHITE)
+        text = font.render("Score: " + str(self.score), True, TEXT_COLOR)
         self.display.blit(text, [0, 0])
         pygame.display.flip()
 

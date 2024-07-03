@@ -14,8 +14,11 @@ BATCH_SIZE = 3000
 LR = 0.001
 EPSILON = 0
 DR = 0.9
+HIDDEN_LAYER = 256
 
 origt =  time.time()
+
+
 
 class Agent:
 
@@ -24,7 +27,7 @@ class Agent:
         self.epsilon = EPSILON # randomness
         self.gamma = DR # discount rate
         self.memory = deque(maxlen=MAX_MEMORY) # popleft()
-        self.model = Linear_QNet(11, 256, 3)
+        self.model = Linear_QNet(11, HIDDEN_LAYER, 3)
         self.trainer = QTrainer(self.model, lr=LR, gamma=self.gamma)
 
 
@@ -106,7 +109,12 @@ class Agent:
 
         return final_move
 
+model = Linear_QNet(11, HIDDEN_LAYER, 3)
+model.load()  # Attempt to load the model's state
 
+# Your training code here
+
+# Your training code here
 def train():
     plot_scores = []
     plot_mean_scores = []

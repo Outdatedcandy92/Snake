@@ -3,10 +3,18 @@ import torch.nn as nn
 import torch.optim as optim
 import torch.nn.functional as F
 import os
-from datetime import datetime
 
+
+
+        
 class Linear_QNet(nn.Module):
-
+    def load(self, file_name='model.pth'):
+        model_folder_path = './model'
+        file_path = os.path.join(model_folder_path, file_name)
+        if os.path.exists(file_path):
+            self.load_state_dict(torch.load(file_path))
+            self.eval()  # Set the model to evaluation mode
+# Your training code here
     def __init__(self, input_size, hidden_size, output_size):
         super().__init__()
         self.linear1 = nn.Linear(input_size, hidden_size)
@@ -21,14 +29,7 @@ class Linear_QNet(nn.Module):
         model_folder_path = './model'
         if not os.path.exists(model_folder_path):
             os.makedirs(model_folder_path)
-        base_file_name, file_extension = os.path.splitext(file_name)
         file_name = os.path.join(model_folder_path, file_name)
-        
-        # Check if the file exists and append a timestamp to the file name
-        if os.path.exists(file_name):
-            timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-            file_name = f"{base_file_name}_{timestamp}{file_extension}"
-            file_name = os.path.join(model_folder_path, file_name)
         
         torch.save(self.state_dict(), file_name)
 
@@ -70,6 +71,4 @@ class QTrainer:
             loss.backward()
 
             self.optimizer.step()    
-
-
 
