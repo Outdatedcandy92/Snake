@@ -4,18 +4,25 @@ import numpy as np
 from collections import deque
 from game import SnakeGameAI, Direction, Point
 from model import Linear_QNet, QTrainer
-from plot import plot
+from plot import plot, save
+import time
+import sys
+import signal
 
 MAX_MEMORY = 300_000
 BATCH_SIZE = 3000
 LR = 0.001
+EPSILON = 0
+DR = 0.9
+
+origt =  time.time()
 
 class Agent:
 
     def __init__(self):
         self.n_games = 0
-        self.epsilon = 0 # randomness
-        self.gamma = 0.9 # discount rate
+        self.epsilon = EPSILON # randomness
+        self.gamma = DR # discount rate
         self.memory = deque(maxlen=MAX_MEMORY) # popleft()
         self.model = Linear_QNet(11, 256, 3)
         self.trainer = QTrainer(self.model, lr=LR, gamma=self.gamma)
@@ -107,7 +114,25 @@ def train():
     record = 0
     agent = Agent()
     game = SnakeGameAI()
+    def signal_handler(sig, frame):
+        print('Saving model...')
+        agent.model.save()
+        time.sleep(0.2)
+        print('Model saved')
+        time.sleep(0.2)
+        save()
+        print('Plot saved as plot.png')
+        time.sleep(0.2)
+        print('Total Time:',time.time()-origt)
+
+
+        sys.exit(0)
+        
+        
+
     while True:
+        signal.signal(signal.SIGINT, signal_handler)
+        start_t = time.time()
         # get old state
         state_old = agent.get_state(game)
 
@@ -133,14 +158,16 @@ def train():
             if score > record:
                 record = score
                 agent.model.save()
-
-            print('Game', agent.n_games, 'Score', score, 'Record:', record)
+            current_t = time.time()
+            
 
             plot_scores.append(score)
             total_score += score
             mean_score = total_score / agent.n_games
             plot_mean_scores.append(mean_score)
             plot(plot_scores, plot_mean_scores)
+            print('Game', agent.n_games, 'Score',score, 'Record:', record, 'Mean Score:', mean_score,'Time:', round(current_t-start_t, 4))
+            
 
 
 if __name__ == '__main__':

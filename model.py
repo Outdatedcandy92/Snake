@@ -3,7 +3,7 @@ import torch.nn as nn
 import torch.optim as optim
 import torch.nn.functional as F
 import os
-
+from datetime import datetime
 
 class Linear_QNet(nn.Module):
 
@@ -21,7 +21,15 @@ class Linear_QNet(nn.Module):
         model_folder_path = './model'
         if not os.path.exists(model_folder_path):
             os.makedirs(model_folder_path)
+        base_file_name, file_extension = os.path.splitext(file_name)
         file_name = os.path.join(model_folder_path, file_name)
+        
+        # Check if the file exists and append a timestamp to the file name
+        if os.path.exists(file_name):
+            timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+            file_name = f"{base_file_name}_{timestamp}{file_extension}"
+            file_name = os.path.join(model_folder_path, file_name)
+        
         torch.save(self.state_dict(), file_name)
 
 class QTrainer:
