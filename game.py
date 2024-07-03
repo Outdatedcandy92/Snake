@@ -67,7 +67,7 @@ class SnakeGameAI:
             if event.type == pygame.QUIT:
                 pygame.quit()
                 quit()
-
+        
         # 2. move
         self._move(action) # update the head
         self.snake.insert(0, self.head)
