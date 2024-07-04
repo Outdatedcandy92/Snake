@@ -24,8 +24,9 @@ BG_COLOR = (0,0,0)
 BLOCK_SIZE = 20
 SPEED = 80
 
-WIDTH = 600
-HEIGHT = 600
+WIDTH = 800
+HEIGHT = 800
+
 
 class SnakeGameAI:
 

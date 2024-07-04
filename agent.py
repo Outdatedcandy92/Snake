@@ -8,15 +8,16 @@ from plot import plot, save
 import time
 import sys
 import signal
+#from setup import final, user_choice
 
 MAX_MEMORY = 300_000
 BATCH_SIZE = 3000
 LR = 0.001
 EPSILON = 0
 DR = 0.9
-HIDDEN_LAYER = 256
+HIDDEN_LAYER = 300
 
-MODE = 1
+MODE = 1 # 1 for training, 2 for playing
 
 origt =  time.time()
 
@@ -181,7 +182,7 @@ def train():
     
      # Set the model to evaluation mode
 
-    #agent.load_model("model.pth")
+    agent.load_model(final)
     
     while MODE==2:  # Or some condition to stop the game after N episodes
         # Get the current state

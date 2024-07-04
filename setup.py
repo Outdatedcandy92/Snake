@@ -22,10 +22,9 @@ elif user_choice == '2':
         print(file)
     file_input = input("Enter the file name: ")
     model_folder = "model"
-    if not os.path.exists(model_folder):
-        os.makedirs(model_folder)
     
-    print(os.path.join(model_folder, file_input))
+    final = os.path.join(model_folder, file_input)
+    
 
 elif user_choice == '3':
     print("Exiting...")

@@ -96,14 +96,22 @@ Play around with these variables to your liking
 
 ## Training Data
 
-![plot](https://github.com/Outdatedcandy92/Snake/assets/138517406/537ac5c6-d89b-4ad1-a464-79920ac44fef)
+![plot](https://github.com/Outdatedcandy92/Snake/assets/138517406/3644ec1b-351b-4245-b272-a004b5852f68)
+Total Time: 965.2057483196259  
+Settings:  
+ MAX_MEMORY: 300000  
+ BATCH_SIZE: 3000  
+ LR: 0.001  
+ EPSILON: 0  
+ DR: 0.9  
+ HIDDEN_LAYER: 300  
 
 
 
 
 ## Demo
 
-Insert gif or link to demo
+![ezgif-4-40f9153ba1-ezgif com-video-to-gif-converter](https://github.com/Outdatedcandy92/Snake/assets/138517406/67de9adb-50a3-4a77-8c3b-96f2d23234da)
 
 
 ## Issues
