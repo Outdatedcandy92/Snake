@@ -9,12 +9,7 @@ import datetime
 
         
 class Linear_QNet(nn.Module):
-    def load(self, file_name='model.pth'):
-        model_folder_path = './model'
-        file_path = os.path.join(model_folder_path, file_name)
-        if os.path.exists(file_path):
-            self.load_state_dict(torch.load(file_path))
-            self.eval()  # Set the model to evaluation mode
+
 # Your training code here
     def __init__(self, input_size, hidden_size, output_size):
         super().__init__()
@@ -30,8 +25,6 @@ class Linear_QNet(nn.Module):
         model_folder_path = './model'
         if not os.path.exists(model_folder_path):
             os.makedirs(model_folder_path)
-        timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
-        file_name = f'model_{timestamp}.pth'
         file_path = os.path.join(model_folder_path, file_name)
         
         torch.save(self.state_dict(), file_path)

@@ -16,6 +16,8 @@ EPSILON = 0
 DR = 0.9
 HIDDEN_LAYER = 256
 
+MODE = 2
+
 origt =  time.time()
 
 
@@ -108,6 +110,7 @@ class Agent:
             final_move[move] = 1
 
         return final_move
+    
 
 
 # Your training code here
@@ -137,7 +140,7 @@ def train():
         
 
   
-    while True:
+    while MODE==1:
         signal.signal(signal.SIGINT, signal_handler)
         start_t = time.time()
         # get old state
@@ -177,25 +180,32 @@ def train():
     
      # Set the model to evaluation mode
 
-    '''while True:
-        agent.model.eval()    
-        signal.signal(signal.SIGINT, signal_handler)
-        start_t = time.time()
-        # get old state
-        state_old = agent.get_state(game)
-
-        # get move
-        final_move = agent.get_action(state_old)
-
-        # perform move and get new state
-        reward, done, score = game.play_step(final_move)
-        state_new = agent.get_state(game)
-
-        if done:
-
-            print('Game', agent.n_games, 'Score',score, 'Record:',)
+    agent.load_model("model.pth")
     
-            break'''
+    while MODE==2:  # Or some condition to stop the game after N episodes
+        # Get the current state
+        state_old = agent.get_state(game)
+        
+        # Get move from the pre-trained model
+        final_move = agent.get_action(state_old)
+        
+        # Perform move and get new state
+        reward, done, score = game.play_step(final_move)
+        
+        if done:
+            # Reset the game to start a new episode
+            game.reset()
+            agent.n_games += 1
+            
+            # Optionally update records and print scores
+            if score > record:
+                record = score  # Assuming 'record' is defined elsewhere
+            plot_scores.append(score)  # Assuming 'plot_scores' is defined elsewhere
+            total_score += score  # Assuming 'total_score' is defined elsewhere
+            mean_score = total_score / agent.n_games
+            plot_mean_scores.append(mean_score)  # Assuming 'plot_mean_scores' is defined elsewhere
+            plot(plot_scores, plot_mean_scores)  # Assuming a function 'plot' is defined elsewhere
+            print(f'Game {agent.n_games}, Score: {score}, Record: {record}, Mean Score: {mean_score}')
 
 if __name__ == '__main__':
     train()

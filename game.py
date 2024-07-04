@@ -24,9 +24,12 @@ BG_COLOR = (0,0,0)
 BLOCK_SIZE = 20
 SPEED = 80
 
+WIDTH = 600
+HEIGHT = 600
+
 class SnakeGameAI:
 
-    def __init__(self, w=800, h=800):
+    def __init__(self, w=WIDTH, h=HEIGHT):
         self.w = w
         self.h = h
         # init display
@@ -74,7 +77,7 @@ class SnakeGameAI:
         # 3. check if game over
         reward = 0
         game_over = False
-        if self.is_collision() or self.frame_iteration > 90*len(self.snake):
+        if self.is_collision() or self.frame_iteration > 50*len(self.snake):
             game_over = True
             reward = -10
             return reward, game_over, self.score
