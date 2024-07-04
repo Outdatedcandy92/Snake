@@ -16,7 +16,7 @@ EPSILON = 0
 DR = 0.9
 HIDDEN_LAYER = 256
 
-MODE = 2
+MODE = 1
 
 origt =  time.time()
 
@@ -133,6 +133,7 @@ def train():
         print('Plot saved as plot.png')
         time.sleep(0.2)
         print('Total Time:',time.time()-origt)
+        print(f'Settings: \n MAX_MEMORY: {MAX_MEMORY} \n BATCH_SIZE: {BATCH_SIZE} \n LR: {LR} \n EPSILON: {EPSILON} \n DR: {DR} \n HIDDEN_LAYER: {HIDDEN_LAYER} \n MODE: {MODE} \n')
 
 
         sys.exit(0)
@@ -180,7 +181,7 @@ def train():
     
      # Set the model to evaluation mode
 
-    agent.load_model("model.pth")
+    #agent.load_model("model.pth")
     
     while MODE==2:  # Or some condition to stop the game after N episodes
         # Get the current state
